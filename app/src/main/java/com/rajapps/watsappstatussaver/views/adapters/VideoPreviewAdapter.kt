@@ -1,16 +1,22 @@
 package com.rajapps.watsappstatussaver.views.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.recyclerview.widget.RecyclerView
 import com.rajapps.watsappstatussaver.R
 import com.rajapps.watsappstatussaver.databinding.ItemVideoPreviewBinding
+import com.rajapps.watsappstatussaver.models.MEDIA_TYPE_IMAGE
+import com.rajapps.watsappstatussaver.models.MEDIA_TYPE_VIDEO
 import com.rajapps.watsappstatussaver.models.MediaModel
 import com.rajapps.watsappstatussaver.utils.saveStatus
+import java.io.File
 
 class VideoPreviewAdapter(val list: ArrayList<MediaModel>, val context: Context) :
     RecyclerView.Adapter<VideoPreviewAdapter.ViewHolder>() {
@@ -50,6 +56,115 @@ class VideoPreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
                         Toast.makeText(context, "Unable to Save", Toast.LENGTH_SHORT).show()
                     }
                 }
+
+//
+//                tools.share.setOnClickListener {
+//                    val mediaUri = mediaModel.pathUri.toUri()
+//                    val mimeType = context.contentResolver.getType(mediaUri)
+//
+//                    val shareIntent = Intent(Intent.ACTION_SEND)
+//                    shareIntent.type = mimeType
+//                    shareIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
+//
+//                    // Use a chooser to allow the user to pick how to share the content
+//                    val chooser = Intent.createChooser(shareIntent, "Share via...")
+//
+//                    try {
+//                        context.startActivity(chooser)
+//                    } catch (e: Exception) {
+//                        Toast.makeText(context, "Unable to share", Toast.LENGTH_SHORT).show()
+//                        e.printStackTrace()
+//                    }
+//                }
+
+
+
+
+                tools.share.setOnClickListener {
+                    val mediaUri = mediaModel.pathUri.toUri()
+                    val mimeType = context.contentResolver.getType(mediaUri)
+
+                    // Create a message with your app's Play Store link
+                    val packageName = context.packageName
+                    val appLink = "Get my awesome app on Play Store: https://play.google.com/store/apps/details?id=$packageName"
+
+
+                    val shareIntent = Intent(Intent.ACTION_SEND)
+                    shareIntent.type = mimeType
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, appLink) // Add your app's link as text
+
+                    // Use a chooser to allow the user to pick how to share the content
+                    val chooser = Intent.createChooser(shareIntent, "Share via...")
+
+                    try {
+                        context.startActivity(chooser)
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Unable to share", Toast.LENGTH_SHORT).show()
+                        e.printStackTrace()
+                    }
+                }
+
+
+
+
+
+
+
+
+                tools.repost.setOnClickListener {
+                    val currentItemPosition = adapterPosition
+                    if (currentItemPosition != RecyclerView.NO_POSITION) {
+                        val mediaModel = list[currentItemPosition]
+
+                        val mediaUri = mediaModel.pathUri.toUri()
+
+                        // Check if it's an image or video
+                        if (mediaModel.type == MEDIA_TYPE_IMAGE) {
+                            // Reposting an image
+                            val shareImageIntent = Intent(Intent.ACTION_SEND)
+                            shareImageIntent.type = "image/*"
+                            shareImageIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
+                            shareImageIntent.setPackage("com.whatsapp") // Specify WhatsApp
+
+                            try {
+                                context.startActivity(Intent.createChooser(shareImageIntent, "Repost Image to WhatsApp"))
+                            } catch (e: Exception) {
+                                Toast.makeText(context, "Unable to repost image", Toast.LENGTH_SHORT).show()
+                                e.printStackTrace()
+                            }
+                        } else if (mediaModel.type == MEDIA_TYPE_VIDEO) {
+                            // Reposting a video
+                            val shareVideoIntent = Intent(Intent.ACTION_SEND)
+                            shareVideoIntent.type = "video/*"
+                            shareVideoIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
+                            shareVideoIntent.setPackage("com.whatsapp") // Specify WhatsApp
+
+                            try {
+                                context.startActivity(Intent.createChooser(shareVideoIntent, "Repost Video to WhatsApp"))
+                            } catch (e: Exception) {
+                                Toast.makeText(context, "Unable to repost video", Toast.LENGTH_SHORT).show()
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             }
         }
