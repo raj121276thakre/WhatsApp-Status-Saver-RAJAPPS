@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    namespace = "com.devatrii.statussaver"
+    namespace = "com.rajapps.watsappstatussaver"
     compileSdk = 34
 
     defaultConfig {
         buildFeatures{
             viewBinding = true
         }
-        applicationId = "com.devatrii.statussaver"
+        applicationId = "com.rajapps.watsappstatussaver"
         minSdk = 24
         //noinspection EditedTargetSdkVersion
         targetSdk = 34
