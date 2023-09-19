@@ -21,6 +21,14 @@
     <color name="colorInactiveItemNight">#BABABA</color>
     <color name="colorActiveItemNight">#fff</color>
 
+
+
+    <color name="grey_10">#e6e6e6</color>
+    <color name="grey_40">#999999</color>
+    <color name="grey_60">#666666</color>
+    <color name="grey_80">#37474F</color>
+    <color name="grey_90">#666666</color>
+
 </resources>
 
 

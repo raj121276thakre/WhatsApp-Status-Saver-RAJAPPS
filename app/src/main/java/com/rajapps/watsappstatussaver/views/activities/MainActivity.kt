@@ -13,8 +13,8 @@ import com.rajapps.watsappstatussaver.utils.SharedPrefUtils
 import com.rajapps.watsappstatussaver.utils.replaceFragment
 import com.rajapps.watsappstatussaver.utils.slideFromStart
 import com.rajapps.watsappstatussaver.utils.slideToEndWithFadeOut
-import com.rajapps.watsappstatussaver.views.fragments.FragmentSettings
 import com.rajapps.watsappstatussaver.views.fragments.FragmentStatus
+import com.rajapps.watsappstatussaver.views.fragments.MenuFragment
 
 class MainActivity : AppCompatActivity() {
     private val activity = this
@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
 
                     R.id.menu_settings -> {
                         // settings
-                        replaceFragment(FragmentSettings())
+                        //replaceFragment(FragmentSettings())
+                        replaceFragment(MenuFragment())
                     }
                 }
 

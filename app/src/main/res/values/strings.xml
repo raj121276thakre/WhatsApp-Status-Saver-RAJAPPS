@@ -2,4 +2,21 @@
     <string name="app_name">Status Saver</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--    setting Items Strings-->
+    <string name="drawer_premium_text">Save in Folder </string>
+    <string name="drawer_share_text">TELL YOUR FRIEND</string>
+    <string name="drawer_rate_text">RATE US</string>
+    <string name="drawer_about_text">ABOUT</string>
+    <string name="drawer_policy_text">PRIVACY POLICY</string>
+    <string name="drawer_more_text">More Apps</string>
+    <string name="share_msg">📌 Discover the ultimate WhatsApp Status Saver app! Get it now on the Play Store: 📲✨ </string>
+
+    <string name="app_version_text" >Version 1.0.0</string>
+    <string name="about_app_text" translatable="false">You are using Whatsapp status save build v1.0.0,</string>
+    <string name="privacy_policy_link" translatable="false">https://doc-hosting.flycricket.io/whatsapp-status-saver-privacy-policy/72d78d97-8a4d-49f2-b2b8-a6fefb3c84e6/privacy</string>
+    <string name="privacy_policy_title" translatable="false">Privacy Policy</string>
+    <string name="about_downloads_text">/internalstorage/Documents/Status Saver</string>
+
 </resources>
