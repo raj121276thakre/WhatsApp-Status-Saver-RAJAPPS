@@ -29,6 +29,38 @@
     <color name="grey_80">#37474F</color>
     <color name="grey_90">#666666</color>
 
+
+
+
+
+
+    <color name="transparent">#00000000</color>
+
+    <color name="splash_text">#1DB06F</color>
+    <color name="header_text_color">#1DB06F</color>
+    <color name="tab_txt_press">#ffffff</color>
+    <color name="tab_txt_unpress">#1DB06F</color>
+    <color name="main_bg_color">#F9FBFD</color>
+    <color name="thumb_color">#A1A1A2</color>
+    <color name="track_color">#DADCDD</color>
+    <color name="chkbox_color">#ffffff</color>
+    <color name="home_top_start_color">#04915f</color>
+    <color name="home_top_end_color">#70c64b</color>
+    <color name="round_btn_bg">#80000000</color>
+    <color name="drawer_unpress">#AFAEAE</color>
+    <color name="drawer_press">#1DB06F</color>
+    <color name="popup_bg">#fff</color>
+    <color name="popup_btn_color">#E6F6ED</color>
+    <color name="btn_icon">#1DB06F</color>
+    <color name="btn_text">#1DB06F</color>
+    <color name="circle_pre">#1DB06F</color>
+    <color name="text_bg_pre">#fff</color>
+    <color name="pre_icon_color">#fff</color>
+    <color name="pre_text_color">#1DB06F</color>
+    <color name="help_text">#1DB06F</color>
+
+
+
 </resources>
 
 

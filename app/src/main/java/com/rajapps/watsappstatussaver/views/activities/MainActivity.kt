@@ -1,11 +1,14 @@
 package com.rajapps.watsappstatussaver.views.activities
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.rajapps.watsappstatussaver.R
 import com.rajapps.watsappstatussaver.databinding.ActivityMainBinding
 import com.rajapps.watsappstatussaver.utils.Constants
@@ -15,12 +18,16 @@ import com.rajapps.watsappstatussaver.utils.slideFromStart
 import com.rajapps.watsappstatussaver.utils.slideToEndWithFadeOut
 import com.rajapps.watsappstatussaver.views.fragments.FragmentStatus
 import com.rajapps.watsappstatussaver.views.fragments.MenuFragment
+import com.yarolegovich.slidingrootnav.SlidingRootNav
+import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder
 
 class MainActivity : AppCompatActivity() {
     private val activity = this
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+
+    private var slidingRootNav: SlidingRootNav? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +71,32 @@ class MainActivity : AppCompatActivity() {
                 return@setOnItemSelectedListener true
             }
 
+
+
+            // sliding
+
+            slidingRootNav = SlidingRootNavBuilder(this@MainActivity)
+                .withToolbarMenuToggle(binding.toolbar)
+                .withMenuOpened(false)
+                .withContentClickableWhenMenuOpened(true)
+                .withSavedState(savedInstanceState)
+                .withMenuLayout(R.layout.menu_left_drawer)
+                .inject()
+
+
+
+
+
+
+
+
+
+
+
         }
     }
+
+
 
     private fun splashLogic() {
         binding.apply {
@@ -76,6 +107,11 @@ class MainActivity : AppCompatActivity() {
             }, 2000)
         }
     }
+
+
+
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

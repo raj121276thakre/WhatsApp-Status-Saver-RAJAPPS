@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
     tools:context=".views.activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -12,15 +13,24 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
 
+        android:animateLayoutChanges="true"
+        >
+
+<!--        id -->
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:title="@string/app_name"
             app:titleCentered="true"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white"
+            app:layout_scrollFlags="scroll|enterAlways"
+            />
+
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -52,14 +62,15 @@
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintVertical_bias="0.0">
 
-        <include
-            android:id="@+id/splash_layout"
-            layout="@layout/layout_splash" />
+                <include
+                    android:id="@+id/splash_layout"
+                    layout="@layout/layout_splash" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

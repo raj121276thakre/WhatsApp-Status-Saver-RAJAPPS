@@ -58,7 +58,8 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
-
+    //sliding root nave 1
+    implementation("com.yarolegovich:sliding-root-nav:1.1.1")
 
 
 }
