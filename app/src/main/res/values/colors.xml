@@ -59,6 +59,8 @@
     <color name="pre_text_color">#1DB06F</color>
     <color name="help_text">#1DB06F</color>
 
+    <color name="snackbar_action_text_color">#1DB06F</color>
+
 
 
 </resources>

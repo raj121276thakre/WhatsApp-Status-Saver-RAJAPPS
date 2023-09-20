@@ -21,6 +21,10 @@
         app:title="@string/app_name"
         app:titleTextColor="@color/white" />
 
+
+
+
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/images_view_pager"
         android:layout_width="match_parent"
@@ -30,6 +34,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+
+
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

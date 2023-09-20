@@ -61,5 +61,14 @@ dependencies {
     //sliding root nave 1
     implementation("com.yarolegovich:sliding-root-nav:1.1.1")
 
+    // AdMob
+    implementation("com.google.android.gms:play-services-ads:22.4.0")
+
+    //in App update
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
+
+
+
+
 
 }

@@ -10,13 +10,18 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.rajapps.watsappstatussaver.R
 
 import com.rajapps.watsappstatussaver.databinding.FragmentMenuBinding
+import com.rajapps.watsappstatussaver.views.activities.AppSettings
 
 
 class MenuFragment : Fragment() {
@@ -24,7 +29,7 @@ class MenuFragment : Fragment() {
     private lateinit var mContext: Context
     private var binding: FragmentMenuBinding? = null
 
-
+    private var adView: LinearLayout? = null  // banner ads
 
 
     override fun onAttach(context: Context) {
@@ -44,8 +49,15 @@ class MenuFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentMenuBinding.inflate(layoutInflater, container, false)
 
+        loadBannerAd() // banner ad
+
+
         return binding!!.root
     }
+
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -178,6 +190,27 @@ class MenuFragment : Fragment() {
 
 
 
+    private fun loadBannerAd() {
+        if (!AppSettings.isUserPaid) {
+            binding!!.menuBannerBlock.visibility = View.VISIBLE
+            binding!!.menuBannerContainerAdmob.visibility = View.GONE
+
+
+            if (AppSettings.enableAdmobAds) {
+                binding!!.menuBannerContainerAdmob.visibility = View.VISIBLE
+                loadAdmobBannerAd()
+
+            }
+        } else {
+            binding!!.menuBannerBlock.visibility = View.GONE
+        }
+    }
+
+    private fun loadAdmobBannerAd() {
+        val adview = binding!!.menuBannerContainerAdmob
+        val adRequest = AdRequest.Builder().build()
+        adview.loadAd(adRequest)
+    }
 
 
 

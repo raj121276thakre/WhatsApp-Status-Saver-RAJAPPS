@@ -17,13 +17,18 @@ import com.rajapps.watsappstatussaver.models.MEDIA_TYPE_VIDEO
 import com.rajapps.watsappstatussaver.models.MediaModel
 import com.rajapps.watsappstatussaver.utils.saveStatus
 import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
 
 import java.io.File
 
-class ImagePreviewAdapter (val list: ArrayList<MediaModel>, val context: Context) :
+class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context) :
     RecyclerView.Adapter<ImagePreviewAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: ItemImagePreviewBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    inner class ViewHolder(val binding: ItemImagePreviewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(mediaModel: MediaModel) {
             binding.apply {
                 Glide.with(context)
@@ -53,11 +58,6 @@ class ImagePreviewAdapter (val list: ArrayList<MediaModel>, val context: Context
                 }
 
 
-
-
-
-
-
 //
 //                tools.share.setOnClickListener {
 //                    val mediaUri = mediaModel.pathUri.toUri()
@@ -79,14 +79,14 @@ class ImagePreviewAdapter (val list: ArrayList<MediaModel>, val context: Context
 //                }
 
 
-
                 tools.share.setOnClickListener {
                     val mediaUri = mediaModel.pathUri.toUri()
                     val mimeType = context.contentResolver.getType(mediaUri)
 
                     // Create a message with your app's Play Store link
                     val packageName = context.packageName
-                    val appLink = "Get my awesome app on Play Store: https://play.google.com/store/apps/details?id=$packageName"
+                    val appLink =
+                        "Get my awesome app on Play Store: https://play.google.com/store/apps/details?id=$packageName"
 
 
                     val shareIntent = Intent(Intent.ACTION_SEND)
@@ -125,9 +125,18 @@ class ImagePreviewAdapter (val list: ArrayList<MediaModel>, val context: Context
                             shareImageIntent.setPackage("com.whatsapp") // Specify WhatsApp
 
                             try {
-                                context.startActivity(Intent.createChooser(shareImageIntent, "Repost Image to WhatsApp"))
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        shareImageIntent,
+                                        "Repost Image to WhatsApp"
+                                    )
+                                )
                             } catch (e: Exception) {
-                                Toast.makeText(context, "Unable to repost image", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    "Unable to repost image",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 e.printStackTrace()
                             }
                         } else if (mediaModel.type == MEDIA_TYPE_VIDEO) {
@@ -138,9 +147,18 @@ class ImagePreviewAdapter (val list: ArrayList<MediaModel>, val context: Context
                             shareVideoIntent.setPackage("com.whatsapp") // Specify WhatsApp
 
                             try {
-                                context.startActivity(Intent.createChooser(shareVideoIntent, "Repost Video to WhatsApp"))
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        shareVideoIntent,
+                                        "Repost Video to WhatsApp"
+                                    )
+                                )
                             } catch (e: Exception) {
-                                Toast.makeText(context, "Unable to repost video", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    "Unable to repost video",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 e.printStackTrace()
                             }
                         }
@@ -148,20 +166,25 @@ class ImagePreviewAdapter (val list: ArrayList<MediaModel>, val context: Context
                 }
 
 
-
-
-
-
-
-
             }
         }
     }
+
+
+    // Function to load the interstitial ad
+
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ImagePreviewAdapter.ViewHolder {
-        return ViewHolder(ItemImagePreviewBinding.inflate(LayoutInflater.from(context), parent, false))
+        return ViewHolder(
+            ItemImagePreviewBinding.inflate(
+                LayoutInflater.from(context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ImagePreviewAdapter.ViewHolder, position: Int) {

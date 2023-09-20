@@ -2,6 +2,13 @@ package com.rajapps.watsappstatussaver.views.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.rajapps.watsappstatussaver.R
 import com.rajapps.watsappstatussaver.databinding.ActivityImagesPreviewBinding
 import com.rajapps.watsappstatussaver.models.MediaModel
 import com.rajapps.watsappstatussaver.utils.Constants
@@ -13,11 +20,18 @@ class ImagesPreview : AppCompatActivity() {
         ActivityImagesPreviewBinding.inflate(layoutInflater)
     }
     lateinit var adapter: ImagePreviewAdapter
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+
         binding.apply {
+
             val list =
                 intent.getSerializableExtra(Constants.MEDIA_LIST_KEY) as ArrayList<MediaModel>
             val scrollTo = intent.getIntExtra(Constants.MEDIA_SCROLL_KEY, 0)
@@ -26,5 +40,13 @@ class ImagesPreview : AppCompatActivity() {
             imagesViewPager.currentItem = scrollTo
         }
 
+
+
     }
+
+
+
+
+
+
 }

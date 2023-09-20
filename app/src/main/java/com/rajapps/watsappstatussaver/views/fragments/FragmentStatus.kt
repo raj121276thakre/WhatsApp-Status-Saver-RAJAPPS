@@ -1,5 +1,6 @@
 package com.rajapps.watsappstatussaver.views.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.rajapps.watsappstatussaver.data.StatusRepo
 import com.rajapps.watsappstatussaver.databinding.FragmentStatusBinding
 import com.rajapps.watsappstatussaver.utils.Constants
@@ -22,6 +27,7 @@ import com.rajapps.watsappstatussaver.viewmodels.factories.StatusViewModel
 import com.rajapps.watsappstatussaver.viewmodels.factories.StatusViewModelFactory
 import com.rajapps.watsappstatussaver.views.adapters.MediaViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rajapps.watsappstatussaver.views.activities.AppSettings
 
 class FragmentStatus : Fragment() {
     private val binding by lazy {
@@ -33,6 +39,8 @@ class FragmentStatus : Fragment() {
 
     private val viewPagerTitles = arrayListOf("Images", "Videos")
     lateinit var viewModel: StatusViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.apply {
@@ -121,11 +129,14 @@ class FragmentStatus : Fragment() {
         savedInstanceState: Bundle?
     ) = binding.root
 
+
     fun refreshStatuses() {
+
         when (type) {
             Constants.TYPE_WHATSAPP_MAIN -> {
                 Toast.makeText(requireActivity(), "Refreshing WP Statuses", Toast.LENGTH_SHORT)
                     .show()
+
                 getWhatsAppStatuses()
             }
 
@@ -135,6 +146,7 @@ class FragmentStatus : Fragment() {
                     "Refreshing WP Business Statuses",
                     Toast.LENGTH_SHORT
                 ).show()
+
                 getWhatsAppBusinessStatuses()
             }
         }
@@ -191,6 +203,11 @@ class FragmentStatus : Fragment() {
 
 
     }
+
+
+
+
+
 }
 
 
