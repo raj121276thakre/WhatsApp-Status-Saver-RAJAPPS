@@ -1,32 +1,41 @@
 package com.rajapps.watsappstatussaver.views.adapters
 
+import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.provider.Settings.Global.getString
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.rajapps.watsappstatussaver.R
 import com.rajapps.watsappstatussaver.databinding.ItemImagePreviewBinding
 import com.rajapps.watsappstatussaver.models.MEDIA_TYPE_IMAGE
 import com.rajapps.watsappstatussaver.models.MEDIA_TYPE_VIDEO
 import com.rajapps.watsappstatussaver.models.MediaModel
 import com.rajapps.watsappstatussaver.utils.saveStatus
-import androidx.viewpager.widget.ViewPager
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.interstitial.InterstitialAd
-
-import java.io.File
+import com.rajapps.watsappstatussaver.views.activities.AppSettings
 
 class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context) :
     RecyclerView.Adapter<ImagePreviewAdapter.ViewHolder>() {
 
 
+    private var mInterstitialAd: InterstitialAd? = null //inter
+
+    init {
+        load_ads()  //interstetial
+    }
     inner class ViewHolder(val binding: ItemImagePreviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(mediaModel: MediaModel) {
@@ -45,6 +54,7 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
 
 
                 tools.download.setOnClickListener {
+                    display_ads(it) //interstetial ad
                     val isDownloaded = context.saveStatus(mediaModel)
                     if (isDownloaded) {
                         // status is downloaded
@@ -58,25 +68,71 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
                 }
 
 
-//
-//                tools.share.setOnClickListener {
-//                    val mediaUri = mediaModel.pathUri.toUri()
-//                    val mimeType = context.contentResolver.getType(mediaUri)
-//
-//                    val shareIntent = Intent(Intent.ACTION_SEND)
-//                    shareIntent.type = mimeType
-//                    shareIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
-//
-//                    // Use a chooser to allow the user to pick how to share the content
-//                    val chooser = Intent.createChooser(shareIntent, "Share via...")
-//
-//                    try {
-//                        context.startActivity(chooser)
-//                    } catch (e: Exception) {
-//                        Toast.makeText(context, "Unable to share", Toast.LENGTH_SHORT).show()
-//                        e.printStackTrace()
-//                    }
-//                }
+
+                tools.repost.setOnClickListener {
+                    val currentItemPosition = adapterPosition
+                    if (currentItemPosition != RecyclerView.NO_POSITION) {
+                        val mediaModel = list[currentItemPosition]
+
+                        val mediaUri = mediaModel.pathUri.toUri()
+
+                        // Check if it's an image or video
+                        if (mediaModel.type == MEDIA_TYPE_IMAGE) {
+
+                            // Show the interstitial ad
+                            display_ads(it)
+
+                            // Reposting an image
+                            val shareImageIntent = Intent(Intent.ACTION_SEND)
+                            shareImageIntent.type = "image/*"
+                            shareImageIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
+                            shareImageIntent.setPackage("com.whatsapp") // Specify WhatsApp
+
+                            try {
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        shareImageIntent,
+                                        "Repost Image to WhatsApp"
+                                    )
+                                )
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    context,
+                                    "Unable to repost image",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                e.printStackTrace()
+                            }
+                        } else if (mediaModel.type == MEDIA_TYPE_VIDEO) {
+                            // Show the interstitial ad
+                            display_ads(it)
+
+                            // Reposting a video
+                            val shareVideoIntent = Intent(Intent.ACTION_SEND)
+                            shareVideoIntent.type = "video/*"
+                            shareVideoIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
+                            shareVideoIntent.setPackage("com.whatsapp") // Specify WhatsApp
+
+                            try {
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        shareVideoIntent,
+                                        "Repost Video to WhatsApp"
+                                    )
+                                )
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    context,
+                                    "Unable to repost video",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }
+
+
 
 
                 tools.share.setOnClickListener {
@@ -109,61 +165,7 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
 
 
 
-                tools.repost.setOnClickListener {
-                    val currentItemPosition = adapterPosition
-                    if (currentItemPosition != RecyclerView.NO_POSITION) {
-                        val mediaModel = list[currentItemPosition]
 
-                        val mediaUri = mediaModel.pathUri.toUri()
-
-                        // Check if it's an image or video
-                        if (mediaModel.type == MEDIA_TYPE_IMAGE) {
-                            // Reposting an image
-                            val shareImageIntent = Intent(Intent.ACTION_SEND)
-                            shareImageIntent.type = "image/*"
-                            shareImageIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
-                            shareImageIntent.setPackage("com.whatsapp") // Specify WhatsApp
-
-                            try {
-                                context.startActivity(
-                                    Intent.createChooser(
-                                        shareImageIntent,
-                                        "Repost Image to WhatsApp"
-                                    )
-                                )
-                            } catch (e: Exception) {
-                                Toast.makeText(
-                                    context,
-                                    "Unable to repost image",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                e.printStackTrace()
-                            }
-                        } else if (mediaModel.type == MEDIA_TYPE_VIDEO) {
-                            // Reposting a video
-                            val shareVideoIntent = Intent(Intent.ACTION_SEND)
-                            shareVideoIntent.type = "video/*"
-                            shareVideoIntent.putExtra(Intent.EXTRA_STREAM, mediaUri)
-                            shareVideoIntent.setPackage("com.whatsapp") // Specify WhatsApp
-
-                            try {
-                                context.startActivity(
-                                    Intent.createChooser(
-                                        shareVideoIntent,
-                                        "Repost Video to WhatsApp"
-                                    )
-                                )
-                            } catch (e: Exception) {
-                                Toast.makeText(
-                                    context,
-                                    "Unable to repost video",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-                }
 
 
             }
@@ -172,6 +174,64 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
 
 
     // Function to load the interstitial ad
+
+    fun load_ads() {
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            context,
+            context.getString(R.string.admob_interstitial), // Replace with your interstitial ad unit ID
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    // Handle ad loading failure
+                    adError.message?.let { errorMessage ->
+                        Log.e(TAG, "Interstitial ad failed to load: $errorMessage")
+                    }
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // Ad has been successfully loaded
+                    Log.d(TAG, "Interstitial ad loaded.")
+                    mInterstitialAd = interstitialAd
+                }
+            }
+        )
+    }
+
+
+    fun display_ads(view: View) {
+        if (mInterstitialAd != null) {
+            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    // Called when the ad is dismissed
+                    // You can proceed with reposting or any other action here
+                    // Make sure to reload the ad for the next use
+                    load_ads()
+                }
+
+
+
+                override fun onAdShowedFullScreenContent() {
+                    // Called when the ad is shown
+                    // This is a good place to disable any UI elements that should not be clickable
+                }
+            }
+            mInterstitialAd?.show(context as Activity)
+        } else {
+            // The interstitial ad wasn't loaded yet, you can handle this case accordingly
+            // For example, show a toast or proceed with reposting
+            Toast.makeText(context, "Interstitial ad not loaded", Toast.LENGTH_SHORT).show()
+            // ... (reposting logic)
+        }
+    }
+
+
+
+
+
+
 
 
     override fun onCreateViewHolder(
@@ -193,6 +253,9 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
     }
 
     override fun getItemCount() = list.size
+
+
+
 
 }
 
